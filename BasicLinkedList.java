@@ -64,8 +64,7 @@ public class BasicLinkedList<T> implements Iterable<T> {
 		Node newT = new Node(data);
 		if (tail == null) {
 			return addToFront(data);
-		}
-		else if (head==tail) {
+		} else if (head == tail) {
 			newT.next = null;
 			tail = newT;
 			head.next = tail;
@@ -79,7 +78,7 @@ public class BasicLinkedList<T> implements Iterable<T> {
 
 	// get the First Node of the List
 	public T getFirst() {
-		if (head==null) {
+		if (head == null) {
 			return null;
 		}
 		return head.data;
@@ -87,7 +86,7 @@ public class BasicLinkedList<T> implements Iterable<T> {
 
 	// get the Last Node of the List
 	public T getLast() {
-		if (tail==null) {
+		if (tail == null) {
 			return null;
 		}
 		return tail.data;
@@ -137,12 +136,12 @@ public class BasicLinkedList<T> implements Iterable<T> {
 		}
 		if (comparator.compare(h.data, targetData) == 0) {// it is the same so remove the node from linked list
 			if (p == null) { // if same is the first node/first Node
-				h = h.next;
+				head = head.next;
 			} else { // if same is found and h is not the first entry;
 				p.next = h.next;
 			}
 		}
-		return removeHelper(targetData, comparator, h, h.next);
+		return removeHelper(targetData, comparator, h.next, h);
 	}
 
 	// returns a reverse ArrayList of the Linked List
@@ -184,7 +183,25 @@ public class BasicLinkedList<T> implements Iterable<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		Iterator<T> itor = new Iterator<T>() {
+			Node curr = head;
+			
+			@Override
+			public boolean hasNext() {
+				return curr!=null;
+			}
+
+			@Override
+			public T next() {
+				if (hasNext()) {
+					T d = curr.data;
+					curr = curr.next;
+					return d;
+				}
+				return null;
+			}
+			
+		};
+		return itor;
 	}
 }
