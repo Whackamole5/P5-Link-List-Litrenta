@@ -20,23 +20,33 @@ public class SortedLinkedList<T> extends BasicLinkedList<T> {
 		this.comparator = comparator;
 	}
 
-	// adds an element T to a sorted linked list using the comparator initial variable
+	// adds an element T to a sorted linked list using the comparator initial
+	// variable
 	public SortedLinkedList<T> add(T element) {
-		Node placement = this.head;
-		Node input = new Node(element);
-		if (head == null) { // if the head is null
-			input.next = null;
-			head = input;
+		return sortedAddHelper(element, head, null);
+	}
+
+	private SortedLinkedList<T> sortedAddHelper(T element, Node h, Node p) {
+		if (h == null) {
+			Node nT = new Node(element);
+			if (p == null) {
+				head = nT;
+				head.next = null;
+			} 
+			else {
+				p.next = nT;
+				tail = nT;
+			}
 			return this;
 		}
-		if (comparator.compare(element, placement.data) >= 1) {
-			placement = placement.next;
-		} else {
-			placement.next = input;
+		else if (comparator.compare(element, h.data)==-1 || comparator.compare(element, h.data)==0) {
+			Node nT = new Node(element);
+			p.next = nT;
+			nT.next = h;
 			return this;
 		}
 
-		return this;
+		return sortedAddHelper(element, h.next, h);
 	}
 
 	// removes element T from a SortedLinkedList using the super remove
