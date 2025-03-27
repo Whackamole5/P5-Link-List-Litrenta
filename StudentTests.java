@@ -16,6 +16,8 @@ import listClasses.BasicLinkedList;
  */
 public class StudentTests {
 	
+
+	
 	// Tests for BasicLinkedList<T>
 
 	@Test // tests functions with a null list ensuring that they work in an empty list scenario.
@@ -55,7 +57,9 @@ public class StudentTests {
 	@Test // tests the remove function
 	public void removeTester() {
 		BasicLinkedList<String> test = new BasicLinkedList<String>();
+		BasicLinkedList<String> after = new BasicLinkedList<String>();
 		
+		test.addToFront("three");
 		test.addToFront("one");
 		test.addToEnd("two");
 		test.addToEnd("three");
@@ -63,6 +67,14 @@ public class StudentTests {
 		test.addToFront("three");
 		
 		test.remove("three", String.CASE_INSENSITIVE_ORDER);
+		
+		after.addToFront("two");
+		after.addToFront("one");
+		after.addToFront("four");
+		
+		System.out.println(test.getSize());
+		assertTrue(test.getFirst().equals("four"));
+		assertTrue(test.getLast().equals("two"));
 		
 	}
 	
