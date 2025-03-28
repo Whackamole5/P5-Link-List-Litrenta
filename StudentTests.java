@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import listClasses.BasicLinkedList;
+import listClasses.SortedLinkedList;
 
 /**
  * 
@@ -25,6 +26,12 @@ public class StudentTests {
 	@Test // tests functions with a null list ensuring that they work in an empty list scenario.
 	public void NullTester() {
 		BasicLinkedList<String> test = new BasicLinkedList<String>();
+		
+		assertTrue(test.getSize()==0);
+		assertTrue(test.getFirst()==null);
+		assertTrue(test.getLast()==null);
+		assertTrue(test.retrieveFirstElement()==null);
+		assertTrue(test.retrieveLastElement()==null);
 		
 	}
 	
@@ -154,8 +161,61 @@ public class StudentTests {
 	
 	// Tests for SortedLinkedList<T>
 	
-	@Test
+	
+	@Test // tests the basic constructor and adding
 	public void sortedAdd() {
+		SortedLinkedList<String> test = new SortedLinkedList<String>(String.CASE_INSENSITIVE_ORDER);
+		
+		assertTrue(test.getSize()==0);
+		assertTrue(test.getFirst()==null);
+		assertTrue(test.getLast()==null);
+		test.add("Z");
+		test.add("A");
+		test.add("G");
+		test.add("T");
+		test.add("B");
+		test.add("G");
+		
+		ArrayList<String> wanted = new ArrayList<String>();
+		wanted.add("A");
+		wanted.add("B");
+		wanted.add("G");
+		wanted.add("G");
+		wanted.add("T");
+		wanted.add("Z");
+		
+		
+		assertTrue(test.getSize()==6);
+		int index = 0;
+		for (String s : test) {
+			assertTrue(s.equals(wanted.get(index)));
+			index++;
+		}
+		
+	}
+	
+	@Test // tests the remove method within the SortedLinkedList class
+	public void sortedRemove() {
+		SortedLinkedList<String> test = new SortedLinkedList<String>(String.CASE_INSENSITIVE_ORDER);
+		
+		assertTrue(test.getSize()==0);
+		assertTrue(test.getFirst()==null);
+		assertTrue(test.getLast()==null);
+		test.add("Z");
+		test.add("A");
+		test.add("G");
+		test.add("T");
+		test.add("B");
+		test.add("T");
+		assertTrue(test.getSize()==6);
+		
+		test.remove("T");
+		assertTrue(test.getSize()==4);
+		
+		for (String s : test) {
+			System.out.println(s);
+			// assertFalse(s.equals("T"));
+		}
 		
 	}
 }
