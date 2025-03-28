@@ -25,27 +25,38 @@ public class SortedLinkedList<T> extends BasicLinkedList<T> {
 	public SortedLinkedList<T> add(T element) {
 		return sortedAddHelper(element, head, null);
 	}
-
+	
 	private SortedLinkedList<T> sortedAddHelper(T element, Node h, Node p) {
-		if (h == null) {
-			Node nT = new Node(element);
-			if (p == null) {
-				head = nT;
-				head.next = null;
-			} 
-			else {
-				p.next = nT;
-				tail = nT;
+		if (h==null) { // reached end
+			Node newT = new Node(element);
+			if (p==null) { // empty list
+				head = newT;
+				newT.next = null;
+				head.next = tail;
+				tail = newT;
+			}
+			else { // adds element to end;
+				p.next = newT;
+				newT.next = null;
+				tail = newT;
+			}
+			System.out.println("\nEnd Reached");
+			return this;
+		}
+		else if (comparator.compare(element, h.data)<=0) { // adds the element before the current node h if h is greater than or equal to the element's value.
+			Node newT = new Node(element);
+			if (p==null) { // if matched at first value
+				newT.next = head;
+				head = newT;
+			}
+			else { // add element before the element that is greater than or equal to this element
+				p.next = newT;
+				newT.next = h;
 			}
 			return this;
 		}
-		else if (comparator.compare(element, h.data)==-1 || comparator.compare(element, h.data)==0) {
-			Node nT = new Node(element);
-			p.next = nT;
-			nT.next = h;
-			return this;
-		}
-
+		
+		
 		return sortedAddHelper(element, h.next, h);
 	}
 
