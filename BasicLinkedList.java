@@ -100,6 +100,7 @@ public class BasicLinkedList<T> implements Iterable<T> {
 		Node temp = head;
 		head = head.next;
 
+		listSize--;
 		return temp.data;
 	}
 
@@ -110,20 +111,28 @@ public class BasicLinkedList<T> implements Iterable<T> {
 
 	// helper for retrieveLastElement
 	private T retLastEleHelper(Node curr, Node prev) {
-		if (curr == null) {
-			if (prev != null) {
+		if (curr==null) { // if first element/head is null or empty list
+			return null;
+		}
+		
+		if (curr.next == null) { // end of list is about to be met
+			Node temp = new Node(curr.data);
+			listSize--;
+			if (prev != null) { // the list is not one entry
 				prev.next = null;
 				tail = prev;
-				return tail.data;
-			} else {
-				return null;
+				return temp.data;
+			} 
+			else { // else the list is one entry;
+				head = null;
+				tail = null;
+				return temp.data;
 			}
 		}
 		return retLastEleHelper(curr.next, curr);
 	}
 
-	// removes entries with a single traversal of the list using the helper/aux
-	// method
+	// removes entries with a single traversal of the list using the helper/aux method
 	public BasicLinkedList<T> remove(T targetData, Comparator<T> comparator) {
 		return removeHelper(targetData, comparator, head, null);
 
@@ -137,9 +146,15 @@ public class BasicLinkedList<T> implements Iterable<T> {
 		if (comparator.compare(h.data, targetData) == 0) {// it is the same so remove the node from linked list
 			if (p == null) { // if same is the first node/first Node
 				head = head.next;
-			} else { // if same is found and h is not the first entry;
+			}
+			else if (h.next==null) {
+				p.next = null;
+				tail = p;
+			}
+			else { // if same is found and h is not the first entry;
 				p.next = h.next;
 			}
+			listSize--;
 		}
 		return removeHelper(targetData, comparator, h.next, h);
 	}
@@ -156,29 +171,42 @@ public class BasicLinkedList<T> implements Iterable<T> {
 	// helper method to getReverseArrayList. Uses recursion
 	private void reverseArrHelper(Node header, ArrayList<T> revArr) {
 		if (header != null) { // runs while header is not null. AKA ends when header is null
-			revArr.add(header.data);
+			revArr.add(0 ,header.data);
 			reverseArrHelper(header.next, revArr);
 		}
 	}
 
 	// returns a reversed Linked List
 	public BasicLinkedList<T> getReverseList() {
-		BasicLinkedList<T> reverseList = this;
+		BasicLinkedList<T> reverseList = new BasicLinkedList<T>();
 
-		this.reverseListHelper(head, reverseList);
-
-		return reverseList;
+		return reverseListHelper(head, new Node(head.data), reverseList);
 	}
 
 	// helper method to getReverseList. Uses recursion
-	private void reverseListHelper(Node header, BasicLinkedList<T> revList) {
-		if (header != null) {
-			Node replacement = header;
-			replacement.next = revList.head;
-			revList.head = replacement;
-			// revList.addToFront(header.data);
-			reverseListHelper(header.next, revList);
+	private BasicLinkedList<T> reverseListHelper(Node tracker, Node curr, BasicLinkedList<T> revList) {
+		if (tracker==null) {
+			return revList;
 		}
+		else {
+			curr = new Node(tracker.data);
+			if (revList.getSize()==0) {
+				curr.next = null;
+				revList.head = curr;
+				revList.tail = curr;
+			}
+			else if (revList.getSize()==1) {
+				curr.next = revList.head;
+				revList.head = curr;
+			}
+			else {
+				curr.next = revList.head;
+				revList.head = curr;
+			}
+			
+			revList.listSize++;
+		}
+		return reverseListHelper(tracker.next, curr, revList);
 	}
 
 	@Override
