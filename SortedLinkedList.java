@@ -40,7 +40,7 @@ public class SortedLinkedList<T> extends BasicLinkedList<T> {
 				newT.next = null;
 				tail = newT;
 			}
-			System.out.println("\nEnd Reached");
+			listSize++;
 			return this;
 		}
 		else if (comparator.compare(element, h.data)<=0) { // adds the element before the current node h if h is greater than or equal to the element's value.
@@ -53,6 +53,7 @@ public class SortedLinkedList<T> extends BasicLinkedList<T> {
 				p.next = newT;
 				newT.next = h;
 			}
+			listSize++;
 			return this;
 		}
 		
